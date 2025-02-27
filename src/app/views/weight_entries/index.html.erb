@@ -1,0 +1,52 @@
+<%# app/views/weight_entries/index.html.erb %>
+<div class="container mx-auto p-6">
+  <h1 class="text-4xl font-bold text-center text-blue-600 mb-6">Traqueur de Poids et Pas</h1>
+  <!-- Bouton de déconnexion -->
+  <div class="flex justify-end mb-5">
+      <%= link_to 'Se déconnecter', destroy_user_session_path, method: :delete, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300" %>
+  </div>
+  <div class="flex justify-end mb-4">
+    <%= link_to "Ajouter une nouvelle entrée", new_weight_entry_path, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white shadow-md rounded-lg">
+      <thead>
+        <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+          <th class="py-3 px-6 text-left">Date</th>
+          <th class="py-3 px-6 text-left">Poids (kg)</th>
+          <th class="py-3 px-6 text-left">Pas</th>
+          <th class="py-3 px-6 text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="text-gray-600 text-sm font-light">
+        <% @weight_entries.each do |entry| %>
+          <tr class="border-b border-gray-200 hover:bg-gray-100">
+            <td class="py-3 px-6 text-left"><%= entry.date %></td>
+            <td class="py-3 px-6 text-left"><%= entry.weight %></td>
+            <td class="py-3 px-6 text-left"><%= entry.steps %></td>
+            <td class="py-3 px-6 text-center flex justify-center">
+              <%= link_to "Voir", weight_entry_path(entry), class: "text-blue-500 hover:underline" %> |
+              <%= link_to "Modifier", edit_weight_entry_path(entry), class: "text-green-500 hover:underline" %> |
+              <%= button_to weight_entry_path(entry), method: :delete, form: { data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer cette entrée ?" } }, class: "text-red-500 hover:underline", title: "Supprimer" do %>
+                Supprimer
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        <%= line_chart [
+  { name: "Poids (kg)", data: WeightEntry.group(:date).sum(:weight), yAxisIndex: 0, color: '#3498db' },
+  { name: "Pas", data: WeightEntry.group(:date).sum(:steps), yAxisIndex: 1, color: '#e74c3c' }
+], 
+library: {
+  yAxis: [
+    { title: { text: "Poids (kg)", style: { color: '#3498db' } } }, # Axe principal
+    { title: { text: "Pas", style: { color: '#e74c3c' } }, opposite: true } # Axe secondaire (droite)
+  ],
+  xAxis: { title: { text: "Date" } }
+} %>
+
+
+      </tbody>
+    </table>
+  </div>
+</div>

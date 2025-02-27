@@ -1,0 +1,41 @@
+<div class="flex justify-center items-center">
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">Ajouter un nouveau suivi de poids</h1>
+
+        <%= form_with(model: @weight_entry, local: true) do |form| %>
+            <% if @weight_entry.errors.any? %>
+        <div class="alert alert-danger">
+            <h4>Erreur</h4>
+            <ul>
+                <% @weight_entry.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+            </ul>
+        </div>
+        <% end %>
+
+        <div class="mb-4">
+            <%= form.label :weight %>
+            <%= form.number_field :weight, step: "0.1", placeholder: "Entrez votre poids"%>
+        </div>
+
+        <div class="mb-4">
+            <%= form.label :steps, "Nombre de pas" %>
+            <%= form.number_field :steps, placeholder: "Entrez votre nombre de pas", class: "w-full border rounded p-2"%>
+        </div>
+        
+        <div class="mb-4">
+            <%= form.label :date %>
+            <%= form.date_field :date, placeholder: "Entrez la date de votre suivi de poids"%>
+        </div>
+
+        <div class="flex justify-end gap-2">
+            <%= form.submit "Enregistrer", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300" %>
+            <%= link_to 'Retour', weight_entries_path , class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300" %>
+
+        </div>
+        <% end %>
+
+    </div>
+</div>
+

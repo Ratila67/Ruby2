@@ -1,0 +1,42 @@
+<div class="flex justify-center items-center">
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">Édition</h1>
+        
+        <p class="text-gray-600">Poids original : <span class="font-semibold text-gray-800"><%= @weight_entry.weight %></span></p>
+        <p class="text-gray-600">Pas original: <span class="font-semibold text-gray-800"><%= @weight_entry.steps %></span></p>
+        <p class="text-gray-600 mb-4">Date originale : <span class="font-semibold text-gray-800"><%= @weight_entry.date %></span></p>
+        
+        <%= form_with(model: @weight_entry, local: true) do |form| %>
+            <% if @weight_entry.errors.any? %>
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                    <h4 class="font-bold">Erreur</h4>
+                    <ul class="list-disc pl-5">
+                        <% @weight_entry.errors.full_messages.each do |message| %>
+                            <li><%= message %></li>
+                        <% end %>
+                    </ul>
+                </div>
+            <% end %>
+        
+            <div class="mb-4">
+                <%= form.label :weight, class: "block text-gray-700 font-bold mb-2" %>
+                <%= form.number_field :weight, step: "0.1", placeholder: "Entrez votre poids", class: "w-full p-2 border rounded-md focus:ring focus:ring-blue-300" %>
+            </div>
+
+            <div class="mb-4">
+                <%= form.label :steps, class: "block text-gray-700 font-bold mb-2"%>
+                <%= form.number_field :steps, placeholder: "Entrez votre nombre de pas", class: "w-full p-2 border rounded-md focus:ring focus:ring-blue-300"%>
+            </div>
+        
+            <div class="mb-4">
+                <%= form.label :date, class: "block text-gray-700 font-bold mb-2" %>
+                <%= form.date_field :date, placeholder: "Entrez la date de votre suivi de poids", class: "w-full p-2 border rounded-md focus:ring focus:ring-blue-300" %>
+            </div>
+        
+            <div class="flex justify-end gap-2">
+                <%= form.submit "Enregistrer", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300" %>
+                <%= link_to 'Retour', weight_entries_path, class: "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition duration-300" %>
+            </div>
+        <% end %>
+    </div>
+</div>
